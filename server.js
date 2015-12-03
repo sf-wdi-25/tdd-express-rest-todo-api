@@ -58,9 +58,26 @@ app.post('/api/todos', function create(req, res) {
 	todos[todos.length] = data;
 });
 
-app.del('/api/todos/:id', function destroy(req, res) {});
+app.delete('/api/todos/:id', function destroy(req, res) {
+	todos.forEach(function (element, index) {
+		if (element._id == req.params.id) {
+			res.json(todos[index]);
+			todos.splice(index, 1);
+		}
+	});
+});
 
-app.put('/api/todos/:id', function update(req, res) {});
+app.put('/api/todos/:id', function update(req, res) {
+	todos.forEach(function (element, index) {
+		var data = req.body;
+		if (element._id == req.params.id) {
+			todos.splice(index, 1, {_id: element._id, task: data.task, description: data.description});
+			res.json(todos[index]);
+		}
+	});
+});
+
+
 
 
 /**********
