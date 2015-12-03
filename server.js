@@ -40,7 +40,7 @@ app.get('/', function homepage (req, res) {
 app.get('/api/todos/search', function search(req, res){});
 
 app.get('/api/todos', function index(req, res) {
-	res.send("hello");
+	res.json({});
 });
 
 app.post('/api/todos', function create(req, res) {});
