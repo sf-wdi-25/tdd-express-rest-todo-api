@@ -39,8 +39,16 @@ app.get('/', function homepage (req, res) {
 
 app.get('/api/todos/search', function search(req, res){});
 
+var todos = [
+	{
+		_id: 0,
+		task: "read",
+		description: "description",
+	}
+];
+
 app.get('/api/todos', function index(req, res) {
-	res.json({});
+	res.json({"todos": todos});
 });
 
 app.post('/api/todos', function create(req, res) {});
