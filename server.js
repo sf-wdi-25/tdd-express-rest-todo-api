@@ -15,9 +15,9 @@ app.use(express.static(__dirname + '/public'));
 
 // our database is an array for now with some hardcoded values
 var todos = [
-  // { _id: 1, task: 'Laundry', description: 'Wash clothes' },
-  // { _id: 2, task: 'Grocery Shopping', description: 'Buy dinner for this week' },
-  // { _id: 3, task: 'Homework', description: 'Make this app super awesome!' }
+  { _id: 1, task: 'Laundry', description: 'Wash clothes' },
+  { _id: 2, task: 'Grocery Shopping', description: 'Buy dinner for this week' },
+  { _id: 3, task: 'Homework', description: 'Make this app super awesome!' }
 ];
 
 /**********
@@ -39,25 +39,28 @@ app.get('/', function homepage (req, res) {
 
 app.get('/api/todos/search', function search(req, res){});
 
-var todos = [
-	{
-		_id: 0,
-		task: "read",
-		description: "description",
-	}
-];
-
 app.get('/api/todos', function index(req, res) {
 	res.json({"todos": todos});
 });
 
-app.post('/api/todos', function create(req, res) {});
+app.get('/api/todos/:id', function show(req, res) {
+	todos.forEach(function (element, index) {
+		if (element._id == req.params.id) {
+			res.json(todos[index]);
+		}
+	});
+});
 
-app.get('/api/todos/:id', function show(req, res) {});
+app.post('/api/todos', function create(req, res) {
+	var previous_id = todos[todos.length-1]._id;
+	var data = {_id: previous_id + 1, task: 'Walk Dog', description: 'Take Fluffy for a walk'};
+	res.json(data);
+	todos[todos.length] = data;
+});
+
+app.del('/api/todos/:id', function destroy(req, res) {});
 
 app.put('/api/todos/:id', function update(req, res) {});
-
-app.delete('/api/todos/:id', function destroy(req, res) {});
 
 
 /**********

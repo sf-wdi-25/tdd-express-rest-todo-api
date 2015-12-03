@@ -112,8 +112,8 @@ describe('Todos API', function() {
           } finally {}
           done();
         }
-      )
-    })
+      );
+    });
 
 
     it('should respond with status 200 - Success', function (done) {
