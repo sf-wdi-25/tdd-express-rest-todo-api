@@ -52,10 +52,14 @@ app.get('/api/todos/:id', function show(req, res) {
 });
 
 app.post('/api/todos', function create(req, res) {
+	// var previous_id = todos[todos.length-1]._id;
+	// var data = {_id: previous_id + 1, task: 'Walk Dog', description: 'Take Fluffy for a walk'};
+	// res.json(data);
 	var previous_id = todos[todos.length-1]._id;
-	var data = {_id: previous_id + 1, task: 'Walk Dog', description: 'Take Fluffy for a walk'};
-	res.json(data);
-	todos[todos.length] = data;
+	var data = req.body;
+	var newToDo = {_id: previous_id + 1, task: data.task, description: data.description};
+	res.json(newToDo);
+	todos[todos.length] = newToDo;
 });
 
 app.delete('/api/todos/:id', function destroy(req, res) {
@@ -71,6 +75,8 @@ app.put('/api/todos/:id', function update(req, res) {
 	todos.forEach(function (element, index) {
 		var data = req.body;
 		if (element._id == req.params.id) {
+			// todos[index].task = data.task;
+			// todos[index].description = data.description;
 			todos.splice(index, 1, {_id: element._id, task: data.task, description: data.description});
 			res.json(todos[index]);
 		}

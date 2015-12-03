@@ -280,7 +280,7 @@ describe('Todos API', function() {
         expect(last_todo.task).to.equal("surf");
 
         done();
-      })
+      });
     });
   });
 });
