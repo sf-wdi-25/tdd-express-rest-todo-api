@@ -37,7 +37,21 @@ app.get('/', function homepage (req, res) {
  * JSON API Endpoints
  */
 
-app.get('/api/todos/search', function search(req, res){});
+app.get('/api/todos/search', function search(req, res){
+	if (req.query.q) {
+		var searchTask = req.query.q;
+		// var searchDescription = req.query.description;
+		var resultsArray = [];
+		todos.forEach(function(element) {
+			if (element.task === searchTask) {
+				resultsArray.push(element);
+			}
+		});
+		res.json({todos: resultsArray});
+	} else {
+	res.sendFile(__dirname + '/views/search.html');
+		}
+});
 
 app.get('/api/todos', function index(req, res) {
 	res.json({todos: todos});
