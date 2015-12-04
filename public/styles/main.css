@@ -12,3 +12,13 @@ h1 {
   color: #000;
   opacity: 0.5;
 }
+
+body{
+  background: url('http://lifesanswersfromwithin.com/wp-content/uploads/2013/03/Unicorns.jpeg');
+  background-repeat: cover;
+}
+
+.well{
+  background: url('https://s-media-cache-ak0.pinimg.com/736x/02/d5/a4/02d5a41f9bef8f0f2ea1c0b8ba02b5f8.jpg');
+    )
+}
