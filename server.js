@@ -9,6 +9,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
 
+app.get('/', function (req, res) {
+	res.sendFile('views/index.html', {root : __dirname});
+});
+
 /************
  * DATABASE *
  ************/
@@ -37,7 +41,15 @@ app.get('/', function homepage (req, res) {
  * JSON API Endpoints
  */
 
-app.get('/api/todos/search', function search(req, res){});
+app.get('/api/todos/search', function search(req, res) {
+	todos.forEach(function (element, index) {
+		var updatedToDo = {"todos": []};
+		updatedToDo.todos.push(todos[index]);
+		if (element.task == req.query.q) {
+			res.json(updatedToDo);
+			}
+	});
+});
 
 app.get('/api/todos', function index(req, res) {
 	res.json({"todos": todos});
@@ -59,7 +71,7 @@ app.post('/api/todos', function create(req, res) {
 	var data = req.body;
 	var newToDo = {_id: previous_id + 1, task: data.task, description: data.description};
 	res.json(newToDo);
-	todos[todos.length] = newToDo;
+	todos.push(newToDo);
 });
 
 app.delete('/api/todos/:id', function destroy(req, res) {
