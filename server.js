@@ -38,7 +38,22 @@ app.get('/', function homepage (req, res) {
  * JSON API Endpoints
  */
 
-app.get('/api/todos/search', function search(req, res){});
+app.get('/api/todos/search', function search(req, res){
+	var newsearch = req.query.q;
+	var filterTodo;
+	var found;
+	todos.forEach(function(ele) {
+		if(ele.task === newsearch) {
+			found = todos.indexOf(ele);
+			filterTodo = todos.splice(found, 1);
+			todos.push(ele);
+			console.log(filterTodo);
+		} else {
+			console.log("dud");
+		}
+	})
+	res.json({todos: filterTodo});
+});
 
 app.get('/api/todos', function index(req, res) {
 	res.json({todos: todos});
