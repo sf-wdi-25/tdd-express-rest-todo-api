@@ -80,6 +80,7 @@ $(function() {
 
         render();
       });
+      
   });
   // add event-handlers to todos for updating/deleting
   $todosList
