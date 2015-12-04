@@ -37,7 +37,7 @@ app.get('/', function homepage (req, res) {
  * JSON API Endpoints
  */
 
-app.get('/api/search', function (req, res) {
+app.get('/search', function (req, res) {
 	res.sendFile('views/search.html', {root : __dirname});
 });
 

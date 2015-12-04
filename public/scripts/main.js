@@ -10,8 +10,10 @@ $(function() {
   // element to display list of todos
   var $todosList = $('#todos-list');
 
-  // form to create new todo
   var $createTodo = $('#create-todo');
+
+   // form to search todos api
+  var $searchTodo = $('#search-todo');
 
   // compile handlebars template
   var source = $('#todos-template').html();
@@ -39,6 +41,49 @@ $(function() {
 
     // render all todos to view
     render();
+  });
+
+  //listen to submit event on form for search input
+  $searchTodo.on('submit', function (even) {
+    event.preventDefault();
+    console.log($searchTodo);
+
+    // serialze form data
+    var searchTodo = $(this).serialize();
+
+    //GET request to search query in todos api
+    $.get(baseUrl + '/search?' + searchTodo, function (data) {
+      console.log(data);
+
+      allTodos = data.todos;
+
+      render();
+    });
+
+    // $.ajax({
+    //   type: 'GET',
+    //   url: baseUrl + '/search?' + searchTodo,
+    //   success: function(data) {
+    //     // replace todo to update with newly updated version (data)
+    //     console.log("hello");
+    //     data.forEach(function(element,index){
+    //       var task = element.task;
+    //       var description = element.description;
+
+    //       //render all searched todos to view
+    //       var showSearchedTodo = $('#todos-list').append('<hr><div><p>Task: ' + task + '</p>' +
+    //       '</br><p>Description: ' + description + '</p>' +
+    //       '</br><p>Release Date: ' + releaseDate + '</p>');
+    //     });
+    //   }
+    // });
+
+    //render the todo matching the query to view
+
+    // reset the form
+    $searchTodo[0].reset();
+    $searchTodo.find('input').first().focus();
+
   });
 
   // listen for submit even on form
