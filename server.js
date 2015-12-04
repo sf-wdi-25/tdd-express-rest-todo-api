@@ -15,9 +15,9 @@ app.use(express.static(__dirname + '/public'));
 
 // our database is an array for now with some hardcoded values
 var todos = [
-  // { _id: 1, task: 'Laundry', description: 'Wash clothes' },
-  // { _id: 2, task: 'Grocery Shopping', description: 'Buy dinner for this week' },
-  // { _id: 3, task: 'Homework', description: 'Make this app super awesome!' }
+  { _id: 1, task: 'Laundry', description: 'Wash clothes' },
+  { _id: 2, task: 'Grocery Shopping', description: 'Buy dinner for this week' },
+  { _id: 3, task: 'Homework', description: 'Make this app super awesome!' },
 ];
 
 /**********
@@ -28,8 +28,8 @@ var todos = [
  * HTML Endpoints
  */
 
-app.get('/', function homepage (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
+app.get('/', function (req, res) {
+	res.sendFile(__dirname + '/views/index.html');  
 });
 
 
@@ -37,17 +37,66 @@ app.get('/', function homepage (req, res) {
  * JSON API Endpoints
  */
 
-app.get('/api/todos/search', function search(req, res){});
+// app.get('/api/todos/search', function search(req, res){
+//   req.query.q();
+// });
 
-app.get('/api/todos', function index(req, res) {});
+app.get('/api/todos', function index(req, res) {
+	//res.send('Hello World!');
+	res.json({'todos':todos});
+});
 
-app.post('/api/todos', function create(req, res) {});
+app.get('/api/todos/:id', function show(req, res) {
+  var reqID = req.params.id;
+  res.json(todos[reqID-1]);
+});
 
-app.get('/api/todos/:id', function show(req, res) {});
+// app.post('/api/todos', function create(req, res) {
+//     res.json(todos[2]); // alwayus return homework
+// });
 
-app.put('/api/todos/:id', function update(req, res) {});
+// Had a difficult understanding tieing the new array and using req.body.
+app.post('/api/todos', function create(req, res) {
+    var new_todo = req.body; // {task: 'Walk Dog', description: 'Take Fluffy for a walk'}
+    // Put it in the databse + give it a new id
+    if(todos.length > 0) {
+      new_todo._id = todos[todos.length - 1]._id + 1;
+    } else {
+        new_todo._id = 1;
+  }
 
-app.delete('/api/todos/:id', function destroy(req, res) {});
+  todos.push(new_todo);
+
+  res.json(new_todo);
+
+});
+
+// Had to look at the solutions to get the delete function to work.
+app.delete('/api/todos/:id', function destroy(req, res) {
+  var todoId = parseInt(req.params.id);
+
+  var todoToDelete = todos.filter(function (todo) {
+    return todo._id == todoId;
+  })[0];
+
+  todos.splice(todos.indexOf(todoToDelete), 1);
+
+  res.json(todoToDelete);
+});
+
+// I could quite understand how req.body works when it comes to using put. Had to use look at solutions for this.
+app.put('/api/todos/:id', function update(req, res) {
+   var todoId = parseInt(req.params.id);
+
+  var todoToUpdate = todos.filter(function (todo) {
+    return todo._id == todoId;
+  })[0];
+
+  todoToUpdate.task = req.body.task;
+  todoToUpdate.description = req.body.description;
+
+  res.json(todoToUpdate);
+});
 
 
 /**********
