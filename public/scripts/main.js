@@ -121,6 +121,42 @@ $(function() {
           render();
         }
       });
+
+        $('#inputForm').on('submit', function (event) {
+    event.preventDefault();
+    var artist = $('#searchTodo').val();
+    $.ajax({
+      method: "GET",
+      url: baseUrl,
+      success: function(data) {
+        app.get('/api/todos/search', function search(req, res){
+        var toSearch = req.query.q;
+        var newArray = [];
+        var found; 
+        todos.forEach(function (e) {
+          if(e.task === toSearch) {
+          found = parseInt(todos.indexOf(e));
+          newArray.push(todos[found]);
+          console.log(newArray);
+      
+  }
+  });
+
+  console.log({todos: newArray});
+  res.json({todos: newArray});
+
+
+
+          
+          $('.stuffGoesHere').append("<p>" + newArray + "</p>");
+        });
+      }
+    });
+  });
+
+
+
+
     });
 
 });
