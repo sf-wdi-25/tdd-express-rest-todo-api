@@ -38,14 +38,15 @@ app.get('/', function homepage (req, res) {
  * JSON API Endpoints
  */
 
-app.get('/api/todos/search', function search(req, res){});
+app.get('/api/todos/search', function search(req, res){
+	console.log(search);
+});
 
 app.get('/api/todos', function index(req, res) {
 	res.json({todos: todos});
 });
 
 app.post('/api/todos', function create(req, res) {
-
 	var newTodo = {};
 	newTodo.task = req.body.task;
 	newTodo.description = req.body.description;
