@@ -77,9 +77,21 @@ app.get('/api/todos/:id', function show (req, res) {
 
 //  res.json(foundTodo);
 // });
+ 	
 
+app.put('/api/todos/:id', function update(req, res) {
+	var todoId = parseInt(req.params.id);
 
-app.put('/api/todos/:id', function update(req, res) {});
+	var todoToUpdate = todos.filter(function (todo) {
+		return todo._id == todoId;
+	})[0];
+
+	todoToUpdate.task = req.body.task;
+	todoToUpdate.description = req.body.description;
+
+	res.json(todoToUpdate);
+});
+
 
 
 app.delete('/api/todos/:id', function destroy(req, res) {
