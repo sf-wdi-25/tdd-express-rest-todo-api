@@ -8,6 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/views'));
 
 /************
  * DATABASE *
@@ -32,20 +33,23 @@ app.get('/', function homepage (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get('/search', function search(req, res){
+	res.sendFile(__dirname + '/views/search.html');
+});
+
 
 /*
  * JSON API Endpoints
  */
 
-app.get('/api/todos/search', function search(req, res){
-
+app.get('/api/todos/search/', function search(req, res){
 	var getArr = {todos:[]};
 	todos.forEach(function (element, index){
 		if(element.task == req.query.q){
 			getArr.todos.push(todos[index]);
+			res.json(getArr);
 		}
 	});
-	res.json(getArr);
 });
 
 app.get('/api/todos', function index(req, res) {

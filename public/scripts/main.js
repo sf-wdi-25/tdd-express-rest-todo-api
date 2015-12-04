@@ -3,6 +3,7 @@ $(function() {
 
   // base API route
   var baseUrl = '/api/todos';
+  var searchUrl = '/api/todos/search';
 
   // array to hold todo data from API
   var allTodos = [];
@@ -12,6 +13,8 @@ $(function() {
 
   // form to create new todo
   var $createTodo = $('#create-todo');
+
+  var $searchTodo = $('#search');
 
   // compile handlebars template
   var source = $('#todos-template').html();
@@ -64,6 +67,20 @@ $(function() {
     $createTodo.find('input').first().focus();
   });
 
+//creating SEARCH on page
+    $searchTodo.on('submit', function (event){
+      event.preventDefault();
+
+      var newTodo = $(this).serialize();
+
+      $.get(searchUrl + '?' + newTodo, function (data){
+        console.log(data);
+
+        allTodos = data.todos;
+
+        render();
+      });
+  });
   // add event-handlers to todos for updating/deleting
   $todosList
 
@@ -122,5 +139,7 @@ $(function() {
         }
       });
     });
+
+
 
 });
