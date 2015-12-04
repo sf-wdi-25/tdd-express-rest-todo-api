@@ -9,10 +9,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
 
-app.get('/api/todos/search', function (req, res) {
-	res.sendFile('views/search.html', {root : __dirname});
-});
-
 /************
  * DATABASE *
  ************/
@@ -40,6 +36,10 @@ app.get('/', function homepage (req, res) {
 /*
  * JSON API Endpoints
  */
+
+app.get('/api/search', function (req, res) {
+	res.sendFile('views/search.html', {root : __dirname});
+});
 
 app.get('/api/todos/search', function search(req, res) {
 	todos.forEach(function (element, index) {
