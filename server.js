@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function (req, res) {
-	res.sendFile('views/index.html', {root : __dirname});
+app.get('/api/todos/search', function (req, res) {
+	res.sendFile('views/search.html', {root : __dirname});
 });
 
 /************
