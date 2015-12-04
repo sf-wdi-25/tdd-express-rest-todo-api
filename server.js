@@ -38,12 +38,12 @@ app.get('/', function homepage (req, res) {
  */
 
 app.get('/api/todos/search', function search(req, res){
-	// var search = (req.query.q);
-	// var searchToDo = todos.find( function(e) {
-	// 	if (search === e.task) {
-	// 		console.log(hello);
-	// 	}
-	// });
+	var search = (req.query.q);
+	var searchToDo = todos.forEach( function(e) {
+		if (search === e.task) {
+			res.json({todos: [e]});		
+		}
+	});
 });
 
 app.get('/api/todos', function index(req, res) {
