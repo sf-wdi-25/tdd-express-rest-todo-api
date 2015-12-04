@@ -1,6 +1,7 @@
 // wait for DOM to load before running JS
 $(function() {
 
+  console.log("JS load!");
   // base API route
   var baseUrl = '/api/todos';
 
@@ -12,6 +13,7 @@ $(function() {
 
   // form to create new todo
   var $createTodo = $('#create-todo');
+  var $searchTodo = $('#search-todo');
 
   // compile handlebars template
   var source = $('#todos-template').html();
@@ -64,13 +66,36 @@ $(function() {
     $createTodo.find('input').first().focus();
   });
 
+  $searchTodo.on('submit', function (event) {
+    event.preventDefault();
+
+    // serialze form data
+    var newTodo = $(this).serialize();
+    console.log(newTodo);
+
+    // POST request to create new todo
+    $.get(baseUrl + '/search?' + newTodo, function (data) {
+      console.log(data);
+
+      // add new todo to `allTodos`
+      allTodos = data.todos;
+
+      // render all todos to view
+      render();
+    });
+
+    // reset the form
+    $searchTodo[0].reset();
+    $searchTodo.find('input').first().focus();
+  });
+
   // add event-handlers to todos for updating/deleting
   $todosList
 
     // for update: submit event on `.update-todo` form
     .on('submit', '.update-todo', function (event) {
       event.preventDefault();
-      
+
       // find the todo's id (stored in HTML as `data-id`)
       var todoId = $(this).closest('.todo').attr('data-id');
 
@@ -96,7 +121,7 @@ $(function() {
         }
       });
     })
-    
+
     // for delete: click event on `.delete-todo` button
     .on('click', '.delete-todo', function (event) {
       event.preventDefault();
