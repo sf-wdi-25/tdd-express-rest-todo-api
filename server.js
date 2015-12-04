@@ -39,29 +39,62 @@ app.get('/', function homepage (req, res) {
 
 app.get('/api/todos/search', function search(req, res){});
 
+
 app.get('/api/todos', function index(req, res) {
 	res.json({todos: todos});
 });
 
-app.post('/api/todos', function create(req, res) {});
+// Copied entirely from website, but at least I *do* get this step
+app.post('/api/todos', function create(req, res) {
+  var newTodo = req.body;
 
-// app.get('/api/todos/:id', function show(req, res) {
-// 	res.json(todos[req.params._id]);
-// });
+  if (todos.length > 0) {
+    newTodo._id = todos[todos.length - 1]._id + 1;
+  } else {
+    newTodo._id = 1;
+  }
+
+  todos.push(newTodo);
+
+  res.json(newTodo);
+});
+
 
 app.get('/api/todos/:id', function show (req, res) {
-  var todoId = parseInt(req.params.id);
-  console.log(req.params);
-  // How woud you grab the todo with that id?
-  todos.filter( function ( element ) {
-	// if the element's _id is equal to todoID, then return it.
-  });
-  console.log(todoID + 1);
+	var wantedID = req.params.id;
+	res.json(todos[wantedID -1]);
 });
+
+
+// ALTERNATE SOLUTION from https://github.com/sf-wdi-25/notes/tree/master/week-03-ajax-json-express
+// 	/day-04-json-api/dawn-create-read
+// app.get('/api/todos/:id', function show(req, res) {
+//    var todoId = parseInt(req.params.id);
+
+//    var foundTodo = todos.filter(function (todo) {
+//    return todo._id === todoId;
+//    })[0];
+
+//  res.json(foundTodo);
+// });
+
 
 app.put('/api/todos/:id', function update(req, res) {});
 
-app.delete('/api/todos/:id', function destroy(req, res) {});
+
+app.delete('/api/todos/:id', function destroy(req, res) {
+	var todoId = parseInt(req.params.id);
+
+	var todoToDelete = todos.filter(function (todo) {
+	    return todo._id === todoId;
+	})[0];
+
+	todos.splice(todos.indexOf(todoToDelete), 1);
+
+	res.json(todoToDelete);
+});
+
+
 
 
 /**********
